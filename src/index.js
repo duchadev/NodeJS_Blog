@@ -7,7 +7,8 @@ const http = require('http')
 const hostname = 'localhost'
 const path = require('path')
 const app = express()
-
+app.use(express.urlencoded())
+app.use(express.json())
 app.use(express.static(__dirname + '/public'))
 // console.log("day la dirname",__dirname +'/public')
 //logger
@@ -25,16 +26,10 @@ app.use((err, req, res, next) => {
   res.send(`<h1>${err.message}</h1>`);
 });
 const sever = http.createServer(app)
-app.get('/',function(req,res)
-{
-  res.render('home')
+const route = require('./routes')
 
-})
-app.get('/about-us',function(req,res)
-{
-  res.render('aboutus')
+route(app);
 
-})
 sever.listen(port,hostname,()=>
 {
     console.log(`Sever running at http://${hostname}:${port}/`);
